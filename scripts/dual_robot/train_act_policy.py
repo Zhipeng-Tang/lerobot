@@ -26,14 +26,14 @@ def main():
     # Manually construct the config to avoid draccus parsing issues
     # Use the local dataset instead of trying to download from hub
     dataset_config = DatasetConfig(
-        repo_id="[YOUR_DATASET_REPO_PATH]"  # Absolute local path
+        repo_id="pick_up_the_beaker"  # Absolute local path
     )
     
     # Create ACT policy config - we'll use the basic config and let the system auto-detect robot features
     policy_config = ACTConfig(
         n_obs_steps=1,
-        chunk_size=8,
-        n_action_steps=8,
+        chunk_size=48,
+        n_action_steps=48,
         dim_model=512,
         dim_feedforward=3200,
         n_heads=8,
@@ -44,14 +44,14 @@ def main():
         vision_backbone="resnet18",
         use_vae=True,
         kl_weight=10.0,
-        repo_id="[REPO_ID_ACT]",  # Add repo_id to satisfy validation
+        repo_id="pick_up_the_beaker",  # Add repo_id to satisfy validation
         push_to_hub=False  # Disable pushing to hub
     )
     
     # Create wandb config
     wandb_config = WandBConfig(
         enable=True,
-        project="[YOUR_WANDB_PROJECT]"
+        project="lerobot_act_pick_up_the_beaker"
     )
     
     # Create training pipeline config
@@ -59,12 +59,12 @@ def main():
         dataset=dataset_config,
         env=None,  # No environment for offline training
         policy=policy_config,
-        output_dir=Path("./outputs/policy/[YOUR_OUTPUT_DIR]"),
-        job_name="[YOUR_JOB_NAME]",
+        output_dir=Path("./outputs/policy/act/pick_up_the_beaker"),
+        job_name="pick_up_the_beaker",
         batch_size=16,
         steps=100000,
         eval_freq=2000,
-        save_freq=10000,
+        save_freq=2000,
         wandb=wandb_config
     )
     
