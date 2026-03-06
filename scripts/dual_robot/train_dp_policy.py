@@ -25,7 +25,7 @@ def main():
     
     # Dataset config with cropped dataset path
     dataset_config = DatasetConfig(
-        repo_id="/data/workspace/tangzhipeng/dataset/franka_xhand_dataset/lerobot/pick_up_the_beaker"  # Absolute local path
+        repo_id="pick_up_the_beaker"  # Absolute local path
     )
     
     # Create Diffusion policy config with manually specified input features
@@ -92,14 +92,15 @@ def main():
         use_film_scale_modulation=True,
         
         # Training
-        repo_id="diffusion-policy-pick_up_the_beaker",
+        repo_id="pick_up_the_beaker",
         push_to_hub=False
     )
     
     # Create wandb config
     wandb_config = WandBConfig(
-        enable=False,  # Enable wandb for tracking
-        project="pick_up_the_beaker"
+        enable=True,  # Enable wandb for tracking
+        project="lerobot_dp_pick_up_the_beaker", 
+        mode="offline"
     )
     
     # Create training pipeline config
@@ -107,7 +108,7 @@ def main():
         dataset=dataset_config,
         env=None,  # No environment for offline training
         policy=policy_config,
-        output_dir=Path("./outputs/policy/pick_up_the_beaker"),
+        output_dir=Path("./outputs/policy/dp/pick_up_the_beaker"),
         job_name="pick_up_the_beaker",
         batch_size=16,
         steps=100000,
