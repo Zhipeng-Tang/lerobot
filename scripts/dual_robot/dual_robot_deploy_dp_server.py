@@ -132,15 +132,15 @@ def load_policy(ckpt_dirs: str, width: int, height: int):
                 "mean": torch.zeros(54),
                 "std": torch.ones(54)
             },
-            "observation.images.tpv": {
+            "observation.images.front_left_view": {
                 "mean": torch.zeros(3, height, width),
                 "std": torch.ones(3, height, width)
             },
-            "observation.images.wrist": {
+            "observation.images.wrist_view": {
                 "mean": torch.zeros(3, height, width),
                 "std": torch.ones(3, height, width)
             },
-            "observation.images.overhead": {
+            "observation.images.head_view": {
                 "mean": torch.zeros(3, height, width),
                 "std": torch.ones(3, height, width)
             },
@@ -195,9 +195,9 @@ def inference():
         "observation": {
             "state": [[...], ...],  # List of n_obs_steps state vectors (54 dims each)
             "images": {
-                "tpv": [[...], ...],   # List of n_obs_steps images (H x W x 3)
-                "wrist": [[...], ...],
-                "overhead": [[...], ...]
+                "front_left_view": [[...], ...],   # List of n_obs_steps images (H x W x 3)
+                "wrist_view": [[...], ...],
+                "head_view": [[...], ...]
             }
         }
     }
@@ -253,21 +253,21 @@ def inference():
         img_height = DEFAULT_IMAGE_HEIGHT
         img_width = DEFAULT_IMAGE_WIDTH
         
-        tpv_images = process_image_list(images.get("tpv", []), (img_height, img_width))
-        wrist_images = process_image_list(images.get("wrist", []), (img_height, img_width))
-        overhead_images = process_image_list(images.get("overhead", []), (img_height, img_width))
+        front_left_view_images = process_image_list(images.get("front_left_view", []), (img_height, img_width))
+        wrist_view_images = process_image_list(images.get("wrist_view", []), (img_height, img_width))
+        head_view_images = process_image_list(images.get("head_view", []), (img_height, img_width))
         
         # Build batch
         state_tensor = torch.FloatTensor(np.stack(state_list)).unsqueeze(0).cuda()
-        tpv_tensor = tpv_images.unsqueeze(0).cuda()
-        wrist_tensor = wrist_images.unsqueeze(0).cuda()
-        overhead_tensor = overhead_images.unsqueeze(0).cuda()
+        front_left_view_tensor = front_left_view_images.unsqueeze(0).cuda()
+        wrist_view_tensor = wrist_view_images.unsqueeze(0).cuda()
+        head_view_tensor = head_view_images.unsqueeze(0).cuda()
         
         batch = {
             "observation.state": state_tensor,
-            "observation.images.tpv": tpv_tensor,
-            "observation.images.wrist": wrist_tensor,
-            "observation.images.overhead": overhead_tensor
+            "observation.images.front_left_view": front_left_view_tensor,
+            "observation.images.wrist_view": wrist_view_tensor,
+            "observation.images.head_view": head_view_tensor
         }
         
         # Normalize inputs
@@ -275,9 +275,9 @@ def inference():
         
         # Stack images for the model
         batch["observation.images"] = torch.stack([
-            batch["observation.images.tpv"],
-            batch["observation.images.wrist"],
-            batch["observation.images.overhead"]
+            batch["observation.images.front_left_view"],
+            batch["observation.images.wrist_view"],
+            batch["observation.images.head_view"]
         ], dim=-4)
         
         # Generate actions
