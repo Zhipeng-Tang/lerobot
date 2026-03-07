@@ -67,8 +67,8 @@ def main():
         # Adjust the config for the robot and task as you need
         # Observation and action configuration
         n_obs_steps=2,
-        horizon=16,
-        n_action_steps=8,
+        horizon=48,
+        n_action_steps=24,
 
         # Diffusion specific - optimized for fast inference
         num_inference_steps=25,
