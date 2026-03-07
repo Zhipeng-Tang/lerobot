@@ -1,13 +1,21 @@
 import os
+import argparse
 import numpy as np
 from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
 
-if __name__ == "__main__":
-    # data_dir = "/home/amax/workspace/dataset/lerobot/pick_up_the_beaker"
-    data_dir = "/home/amax/workspace/dataset/lerobot/toaster"
-    output_dir = "outputs/data_vis"
+def parse_args():
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(description="Replay recorded dual robot dataset")
+    parser.add_argument("--dataset-path", help="Path to the dataset path")
+    parser.add_argument("--output-path", type=str, default="outputs/data_vis", help="Path to save the stats.json")
+    return parser.parse_args()
+
+if __name__ == "__main__": 
+    args = parse_args()
+    data_dir = args.dataset_path
+    output_dir = args.output_path
     data_dir = Path(data_dir)
     output_dir = Path(output_dir)
 
