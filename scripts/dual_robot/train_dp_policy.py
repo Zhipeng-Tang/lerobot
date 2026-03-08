@@ -68,7 +68,7 @@ def main():
         # Observation and action configuration
         n_obs_steps=2,
         horizon=48,
-        n_action_steps=24,
+        n_action_steps=47,
 
         # Diffusion specific - optimized for fast inference
         num_inference_steps=25,
@@ -100,7 +100,7 @@ def main():
     wandb_config = WandBConfig(
         enable=True,  # Enable wandb for tracking
         project="lerobot_dp_pick_up_the_beaker", 
-        mode="offline"
+        # mode="offline"
     )
     
     # Create training pipeline config
@@ -112,7 +112,6 @@ def main():
         job_name="pick_up_the_beaker",
         batch_size=16,
         steps=100000,
-        log_freq=10,
         eval_freq=2000,
         save_freq=2000,
         wandb=wandb_config
