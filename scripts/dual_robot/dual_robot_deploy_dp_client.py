@@ -107,7 +107,7 @@ def main():
     
     # Tunable parameters
     ACTION_SCALE = 1.0
-    SMOOTHING_ALPHA = 0.5
+    SMOOTHING_ALPHA = 1.0
     
     print(f"Settings: ACTION_SCALE={ACTION_SCALE}, SMOOTHING_ALPHA={SMOOTHING_ALPHA}")
     
